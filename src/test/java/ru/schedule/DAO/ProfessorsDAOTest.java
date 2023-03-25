@@ -6,9 +6,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import ru.schedule.models.Classes;
-import ru.schedule.models.Courses;
-import ru.schedule.models.Professors;
+import ru.schedule.models.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +24,13 @@ public class ProfessorsDAOTest {
     @Autowired
     private CoursesDAO coursesDAO;
     @Autowired
+    private CoursesProfessorsDAO coursesProfessorsDAO;
+    @Autowired
     private SessionFactory sessionFactory;
+    @Autowired
+    private ClassesDAO classesDAO;
+    @Autowired
+    private ClassroomsDAO classroomsDAO;
 
     @Test
     void testSimpleManipulations() {
@@ -62,8 +66,10 @@ public class ProfessorsDAOTest {
 
     @Test
     void testSchedule() {
-        List<Classes> schedule3 = professorsDAO.get_schedule( new Professors(123L, "Ivanov", "Ivan", "Ivanovich"), (short) 1, (short) 5);
+        List<Classes> schedule3 = professorsDAO.get_schedule( new Professors(1L, "Ivanov", "Ivan", "Ivanovich"), (short) 1, (short) 5);
         assertEquals(2, schedule3.size());
+        schedule3 = professorsDAO.get_schedule( new Professors(5L, "Ivanov", "Ivan", "Ivanovich"), (short) 1, (short) 5);
+        assertNull(schedule3);
     }
     @BeforeEach
     void beforeEach() {
@@ -80,6 +86,22 @@ public class ProfessorsDAOTest {
         professorsList.add(new Professors(1L, "Borisov", "Boris", "Borisovich"));
         professorsList.add(new Professors(123L, "Kirillov", "Kirill", null));
         professorsDAO.saveCollection(professorsList);
+
+        coursesProfessorsDAO.add(new CoursesProfessors(1L, 1L, 1L));
+        coursesProfessorsDAO.add(new CoursesProfessors(1L, 4L, 1L));
+
+        List<Classrooms> classroomList = new ArrayList<>();
+        classroomList.add(new Classrooms(1L, 106L, 150));
+        classroomList.add(new Classrooms(2L, 666L, 30));
+        classroomList.add(new Classrooms(3L, 527L, 50));
+        classroomsDAO.saveCollection(classroomList);
+
+        List<Classes> classesList = new ArrayList<>();
+        classesList.add(new Classes(123L, 1L, 1L, "16:20:00", (short) 1));
+        classesList.add(new Classes(null, 2L, 2L, "08:45:00", (short) 2));
+        classesList.add(new Classes(1L, 3L, 3L, "14:35:00", (short) 3));
+        classesList.add(new Classes(123L, 1L, 3L, "10:30:00", (short) 4));
+        classesDAO.saveCollection(classesList);
     }
 
     @BeforeAll

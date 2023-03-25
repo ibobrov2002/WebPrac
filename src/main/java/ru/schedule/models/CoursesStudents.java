@@ -16,14 +16,11 @@ public class CoursesStudents implements CommonEntity<Long> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "course_id")
-    @ToString.Exclude
-    private Courses course_id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @Column(name = "course_id")
+    private Long course_id;
+
     @JoinColumn(name = "student_id")
-    @ToString.Exclude
-    private Students student_id;
+    private Long student_id;
 
 }
