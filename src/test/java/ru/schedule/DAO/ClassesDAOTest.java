@@ -46,6 +46,12 @@ public class ClassesDAOTest {
     }
 
     @Test
+    void testSimpleManipulations() {
+        List<Classes> classesListAll = classesDAO.getAll();
+        assertEquals(4, classesListAll.size());
+    }
+
+    @Test
     void testSaveCollection() {
         assertNull(classesDAO.getById(5L));
         classesDAO.add(new Classes(5L, 3L, 2L, "08:45:00", (short) 5));

@@ -38,7 +38,7 @@ public class ClassroomsDAOTest {
 
     @Test
     void testSchedule() {
-        List<Classes> schedule3 = classroomsDAO.get_schedule( (long) 3, (short) 1, (short) 5);
+        List<Classes> schedule3 = classroomsDAO.get_schedule( (long) 527, (short) 1, (short) 5);
         assertEquals(2, schedule3.size());
         assertEquals(3L, schedule3.get(1).getId());
     }

@@ -42,7 +42,7 @@ public class ClassroomsDAOImpl extends CommonDAOImpl<Classrooms, Long> implement
     @Override
     public List<Classes> get_schedule(Long number, Short start, Short end) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Classes> query = session.createQuery("FROM Classes WHERE classroom_num = :gotClas and day_of_week >= :gotStart and day_of_week <= :gotEnd", Classes.class)
+            Query<Classes> query = session.createQuery("FROM Classes WHERE classroom_num = (SELECT id FROM Classrooms WHERE number = :gotClas ) and day_of_week >= :gotStart and day_of_week <= :gotEnd", Classes.class)
                     .setParameter("gotClas", number).setParameter("gotStart", start).setParameter("gotEnd", end);
             List<Classes> clas = query.getResultList();
             return clas.size() == 0 ? null : clas;
